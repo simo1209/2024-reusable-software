@@ -1,3 +1,3 @@
 package src.records;
 
-public record Course(int year, String name, int credits, boolean required) {}
+public record Course(UUID id, int year, String name, int credits, boolean required) {}
