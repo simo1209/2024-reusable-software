@@ -1,6 +1,8 @@
 
 ## Records
 
+Can't have record inheritance so sadge
+
 Person
 - firstName
 - middleName
@@ -8,27 +10,32 @@ Person
 - egn
 - birthdate
 
-Student : Person
+Student 
 - faculty number
 - yearEnrolled
 - major
 
-Teacher : Person
+Teacher
 - academicTitle
 
 Semester
-- courses
+- year
+- season (WINTER / SUMMER)
 
 Course
 - year
 - name
-- students
 - credits
 - required
-- exams
-    - grades
-      - student
-      - grade
+
+Exam
+- date
+
+## Data Access Objects
+
+One for each record.
+Interface for accessing the fields.
+Implementation for storage in memory.
 
 
 ## TODO
