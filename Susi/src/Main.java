@@ -1,62 +1,48 @@
+package src;
+
+import java.time.LocalDate;
 import java.util.*;
 
+import src.records.Student;
+import src.records.Teacher;
+import src.records.Course;
+import src.records.Semester;
+import src.records.Exam;
+
 public class Main {
-    public static void main(String[] args) {
+  public static void main(String[] args) {
+        Student student1 = new Student("John", "A.", "Doe", "1234567890", LocalDate.of(2000, 5, 15), "F12345", 2019, "Computer Science");
+        Student student2 = new Student("Jane", "B.", "Smith", "9876543210", LocalDate.of(2001, 8, 22), "F67890", 2020, "Mechanical Engineering");
+
+        Teacher teacher1 = new Teacher("Alice", "C.", "Brown", "2345678901", LocalDate.of(1980, 2, 5), "PhD");
+        Teacher teacher2 = new Teacher("Bob", "D.", "Johnson", "3456789012", LocalDate.of(1975, 11, 10), "Professor");
+
+        Course course1 = new Course(2023, "Introduction to Programming", 6, true);
+        Course course2 = new Course(2023, "Thermodynamics", 5, false);
+
+        Semester semester1 = new Semester(2023, Semester.Season.WINTER);
+        Semester semester2 = new Semester(2024, Semester.Season.SUMMER);
+
+        Exam exam1 = new Exam(LocalDate.of(2023, 12, 20));
+        Exam exam2 = new Exam(LocalDate.of(2024, 6, 15));
+
+        // HashMaps
+        Map<Course, List<Student>> courseToStudents = new HashMap<>();
+        courseToStudents.put(course1, List.of(student1, student2));
+        courseToStudents.put(course2, List.of(student2));
+
+        Map<Course, List<Teacher>> courseToTeachers = new HashMap<>();
+        courseToTeachers.put(course1, List.of(teacher1));
+        courseToTeachers.put(course2, List.of(teacher2));
+
+        Map<Course, List<Exam>> courseToExams = new HashMap<>();
+        courseToExams.put(course1, List.of(exam1));
+        courseToExams.put(course2, List.of(exam2));
+
+        Map<Student, List<Semester>> studentToSemesters = new HashMap<>();
+        studentToSemesters.put(student1, List.of(semester1, semester2));
+        studentToSemesters.put(student2, List.of(semester1));
 
 
-        List<Address> addresses = Arrays.asList(new Address("123 Main St", "Springfield", "12345"));
-        List<ContactInfo> contactInfos = Arrays.asList(new ContactInfo("email", "teacher@example.com"));
-
-        Teacher teacher1 = new Teacher("tusername1", "password1", "Alice Johnson", "1234567890",
-                new Date(), addresses, contactInfos);
-        Teacher teacher2 = new Teacher("tusername2", "password2", "Bob Smith", "0987654321",
-                new Date(), addresses, contactInfos);
-
-        HashMap<String, Teacher> teachers = new HashMap<>();
-        teachers.put("tusername1", teacher1);
-        teachers.put("tusername2", teacher2);
-
-        ConsoleCourseService courseService = new ConsoleCourseService(teachers);
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
-
-        while (running) {
-            System.out.println("Course Management System");
-            System.out.println("1. Create Course");
-            System.out.println("2. View Courses");
-            System.out.println("3. Exit");
-            System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
-
-            switch (option) {
-                case 1:
-                    courseService.createCourse();
-                    break;
-                case 2:
-                    viewCourses(courseService);
-                    break;
-                case 3:
-                    running = false;
-                    System.out.println("Exiting...");
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
-            }
-        }
-
-        scanner.close();
-    }
-
-
-    private static void viewCourses(ConsoleCourseService courseService) {
-        System.out.println("Courses:");
-        for (Course course : courseService.getCourses()) {
-            System.out.println("Name: " + course.getName() +
-                    ", Credits: " + course.getCredits() +
-                    ", Required: " + course.isRequired() +
-                    ", Semester: " + course.getSemester().year() + " " + course.getSemester().season() + // Assuming getName() exists
-                    ", Teacher: " + course.getHeadTeacher().getName()); // Assuming getName() exists
-        }
-    }
+  }
 }
