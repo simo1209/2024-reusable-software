@@ -1,41 +1,50 @@
 package src;
 
-import java.time.LocalDate;
-import java.util.*;
+import src.daos.CourseDAO;
+import src.daos.StudentDAO;
+import src.daos.TeacherDAO;
+import src.daos.SemesterDAO;
+import src.daos.ExamDAO;
 
+import src.daos.associations.CourseStudentAssociation;
+import src.daos.associations.CourseTeacherAssociation;
+import src.daos.associations.CourseExamAssociation;
+import src.daos.associations.StudentSemesterAssociation;
+
+import src.daos.memory.MemoryCourseDAO;
+import src.daos.memory.MemoryStudentDAO;
+import src.daos.memory.MemoryTeacherDAO;
+import src.daos.memory.MemorySemesterDAO;
+import src.daos.memory.MemoryExamDAO;
+
+import src.daos.memory.associations.MemoryCourseStudentAssociation;
+import src.daos.memory.associations.MemoryCourseTeacherAssociation;
+import src.daos.memory.associations.MemoryCourseExamAssociation;
+import src.daos.memory.associations.MemoryStudentSemesterAssociation;
+
+import src.records.Course;
 import src.records.Student;
 import src.records.Teacher;
-import src.records.Course;
 import src.records.Semester;
 import src.records.Exam;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 public class Main {
 
-  CourseDAO courseDAO;
-  StudentDAO studentDAO;
-  TeacherDAO teacherDAO;
-  SemesterDAO semesterDAO;
-  ExamDAO examDAO;
+  public static void main(String[] args) {
+    CourseDAO courseDAO = new MemoryCourseDAO();
+    StudentDAO studentDAO = new MemoryStudentDAO();
+    TeacherDAO teacherDAO = new MemoryTeacherDAO();
+    SemesterDAO semesterDAO = new MemorySemesterDAO();
+    ExamDAO examDAO = new MemoryExamDAO();
 
-  CourseStudentAssociation courseStudentAssociation;
-  CourseTeacherAssociation courseTeacherAssociation;
-  CourseExamAssociation courseExamAssociation;
-  StudentSemesterAssociation studentSemesterAssociation;
+    CourseStudentAssociation courseStudentAssociation = new MemoryCourseStudentAssociation();
+    CourseTeacherAssociation courseTeacherAssociation = new MemoryCourseTeacherAssociation();
+    CourseExamAssociation courseExamAssociation = new MemoryCourseExamAssociation();
+    StudentSemesterAssociation studentSemesterAssociation = new MemoryStudentSemesterAssociation();
 
-  private static void initializeDataAccessObjects() {
-    courseDAO = new MemoryCourseDAO();
-    studentDAO = new MemoryStudentDAO();
-    teacherDAO = new MemoryTeacherDAO();
-    semesterDAO = new MemorySemesterDAO();
-    examDAO = new MemoryExamDAO();
-
-    courseStudentAssociation = new MemoryCourseStudentAssociation();
-    courseTeacherAssociation = new MemoryCourseTeacherAssociation();
-    courseExamAssociation = new MemoryCourseExamAssociation();
-    studentSemesterAssociation = new MemoryStudentSemesterAssociation();
-  }
-
-  private static void populateDataAccessObjects() {
     Student student1 = new Student(UUID.randomUUID(), "John", "A.", "Doe", "1234567890", LocalDate.of(2000, 5, 15), "F12345", 2019, "Computer Science");
     Student student2 = new Student(UUID.randomUUID(), "Jane", "B.", "Smith", "9876543210", LocalDate.of(2001, 8, 22), "F67890", 2020, "Mechanical Engineering");
 
@@ -79,11 +88,8 @@ public class Main {
     studentSemesterAssociation.addSemesterToStudent(student1.id(), semester1.id());
     studentSemesterAssociation.addSemesterToStudent(student1.id(), semester2.id());
     studentSemesterAssociation.addSemesterToStudent(student2.id(), semester1.id());
-  }
 
-  public static void main(String[] args) {
-    initializeDataAccessObjects();
-    populateDataAccessObjects();
+    studentSemesterAssociation.removeSemesterFromStudent(student1.id(), semester1.id());
 
 
   }
