@@ -44,6 +44,7 @@ public class Main {
     CourseTeacherAssociation courseTeacherAssociation = new MemoryCourseTeacherAssociation();
     CourseExamAssociation courseExamAssociation = new MemoryCourseExamAssociation();
     StudentSemesterAssociation studentSemesterAssociation = new MemoryStudentSemesterAssociation();
+    ExamStudentGradeAssociation examStudentGradeAssociation = new MemoryExamStudentGradeAssociation();
 
     Student student1 = new Student(UUID.randomUUID(), "John", "A.", "Doe", "1234567890", LocalDate.of(2000, 5, 15), "F12345", 2019, "Computer Science");
     Student student2 = new Student(UUID.randomUUID(), "Jane", "B.", "Smith", "9876543210", LocalDate.of(2001, 8, 22), "F67890", 2020, "Mechanical Engineering");
@@ -91,6 +92,10 @@ public class Main {
 
     studentSemesterAssociation.removeSemesterFromStudent(student1.id(), semester1.id());
 
+
+    examStudentGradeAssociation.assignGradeToStudent(exam1.id(), student1.id(), 3);
+    examStudentGradeAssociation.assignGradeToStudent(exam1.id(), student2.id(), 2);
+    examStudentGradeAssociation.assignGradeToStudent(exam2.id(), student2.id(), 3);
 
   }
 }
