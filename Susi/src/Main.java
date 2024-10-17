@@ -37,8 +37,10 @@ import src.records.Semester;
 import src.records.Exam;
 
 import src.services.AuthenticationService;
+import src.services.CourseService;
 
 import src.services.impl.PlaintextPasswordAuthenticationService;
+import src.services.impl.SimpleCourseService;
 
 import src.ui.console.ConsoleLoginUI;
 
@@ -131,8 +133,9 @@ public class Main {
 
 
     AuthenticationService authenticationService = new PlaintextPasswordAuthenticationService(accountDAO);
+    CourseService courseService = new SimpleCourseService(courseDAO);
 
-    ConsoleLoginUI loginUI = new ConsoleLoginUI(authenticationService);
+    ConsoleLoginUI loginUI = new ConsoleLoginUI(authenticationService, courseService);
 
 
     loginUI.displayLogin();

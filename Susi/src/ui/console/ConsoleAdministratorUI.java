@@ -1,10 +1,21 @@
 package src.ui.console;
 
 import src.ui.UserUI;
+import src.services.CourseService;
+import src.records.Course;
+
 import java.util.Scanner;
+import java.util.Optional;
+import java.util.UUID;
 
 public class ConsoleAdministratorUI implements UserUI {
     private final Scanner scanner = new Scanner(System.in);
+
+    private final CourseService courseService;
+    
+    public ConsoleAdministratorUI(CourseService courseService) {
+      this.courseService = courseService;
+    }
 
     public void displayDashboard() {
         System.out.println("Welcome to the Administrator Dashboard!");
@@ -12,16 +23,18 @@ public class ConsoleAdministratorUI implements UserUI {
         boolean running = true;
         while (running) {
             System.out.println("\nChoose an action:");
-            System.out.println("1. Add a new course");
-            System.out.println("2. Add a new teacher");
-            System.out.println("3. Add a new student");
-            System.out.println("4. Enroll student to course");
-            System.out.println("5. Remove student from course");
-            System.out.println("6. Exit");
+            System.out.println("1.1: Add a new course");
+            System.out.println("1.2: List all courses");
+            System.out.println("2: Add a new teacher");
+            System.out.println("3: Add a new student");
+            System.out.println("4: Enroll student to course");
+            System.out.println("5: Remove student from course");
+            System.out.println("6: Exit");
 
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> addCourse();
+                case "1.1" -> addCourse();
+                case "1.2" -> listAllCourses();
                 case "2" -> addTeacher();
                 case "3" -> addStudent();
                 case "4" -> enrollStudentToCourse();
@@ -49,8 +62,16 @@ public class ConsoleAdministratorUI implements UserUI {
         System.out.print("Is the course required? (true/false): ");
         boolean required = Boolean.parseBoolean(scanner.nextLine());
 
-        // Placeholder for course creation logic
+        courseService.createCourse(new Course(UUID.randomUUID(), courseYear, courseName, credits, required));
         System.out.println("New course: " + courseName + ", Year: " + courseYear + ", Credits: " + credits + ", Required: " + required);
+    }
+
+    private void listAllCourses() {
+      System.out.println("\n--- Listing All Courses ---");
+
+      for(Course course : courseService.listAllCourses()) {
+        System.out.println(course);
+      }
     }
 
     private void addTeacher() {

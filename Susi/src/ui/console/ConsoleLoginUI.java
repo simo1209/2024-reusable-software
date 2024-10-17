@@ -1,6 +1,7 @@
 package src.ui.console;
 
 import src.services.AuthenticationService;
+import src.services.CourseService;
 import src.records.Account;
 import src.ui.LoginUI;
 import src.ui.UIFactory;
@@ -11,10 +12,15 @@ import java.util.Scanner;
 
 public class ConsoleLoginUI implements LoginUI {
     private final AuthenticationService authenticationService;
+    private final CourseService courseService;
     private final Scanner scanner = new Scanner(System.in);
+    private final UIFactory uiFactory;
 
-    public ConsoleLoginUI(AuthenticationService authenticationService) {
+    public ConsoleLoginUI(AuthenticationService authenticationService, CourseService courseService) {
         this.authenticationService = authenticationService;
+        this.courseService = courseService;
+
+        this.uiFactory = new UIFactory(courseService);
     }
 
     @Override
@@ -29,7 +35,7 @@ public class ConsoleLoginUI implements LoginUI {
 
         if (accountOpt.isPresent()) {
             Account account = accountOpt.get();
-            UserUI userUI = UIFactory.createUI(account);
+            UserUI userUI = uiFactory.createUI(account);
             userUI.displayDashboard();
         } else {
             System.out.println("Login failed. Please try again.");
