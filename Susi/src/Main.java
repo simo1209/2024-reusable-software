@@ -3,6 +3,7 @@ package src;
 import src.daos.AccountDAO;
 import src.daos.CourseDAO;
 import src.daos.StudentDAO;
+import src.daos.AdministratorDAO;
 import src.daos.TeacherDAO;
 import src.daos.SemesterDAO;
 import src.daos.ExamDAO;
@@ -16,6 +17,7 @@ import src.daos.associations.ExamStudentGradeAssociation;
 import src.daos.memory.MemoryAccountDAO;
 import src.daos.memory.MemoryCourseDAO;
 import src.daos.memory.MemoryStudentDAO;
+import src.daos.memory.MemoryAdministratorDAO;
 import src.daos.memory.MemoryTeacherDAO;
 import src.daos.memory.MemorySemesterDAO;
 import src.daos.memory.MemoryExamDAO;
@@ -29,6 +31,7 @@ import src.daos.memory.associations.MemoryExamStudentGradeAssociation;
 import src.records.Account;
 import src.records.Course;
 import src.records.Student;
+import src.records.Administrator;
 import src.records.Teacher;
 import src.records.Semester;
 import src.records.Exam;
@@ -48,6 +51,7 @@ public class Main {
     AccountDAO accountDAO = new MemoryAccountDAO();
     CourseDAO courseDAO = new MemoryCourseDAO();
     StudentDAO studentDAO = new MemoryStudentDAO();
+    AdministratorDAO administratorDAO = new MemoryAdministratorDAO();
     TeacherDAO teacherDAO = new MemoryTeacherDAO();
     SemesterDAO semesterDAO = new MemorySemesterDAO();
     ExamDAO examDAO = new MemoryExamDAO();
@@ -64,10 +68,13 @@ public class Main {
     Teacher teacher1 = new Teacher(UUID.randomUUID(), "Alice", "C.", "Brown", "2345678901", LocalDate.of(1980, 2, 5), "PhD");
     Teacher teacher2 = new Teacher(UUID.randomUUID(), "Bob", "D.", "Johnson", "3456789012", LocalDate.of(1975, 11, 10), "Professor");
 
+    Administrator admin1 = new Administrator(UUID.randomUUID(), "Admin", "A.", "Administrator", "4567890123", LocalDate.of(1970, 10, 17));
+
     Account student1Account = new Account(UUID.randomUUID(), "john@student.com", "john", Account.Role.STUDENT, student1.id());
     Account student2Account = new Account(UUID.randomUUID(), "jane@student.com", "jane", Account.Role.STUDENT, student2.id());
     Account teacher1Account = new Account(UUID.randomUUID(), "alice@teacher.com", "alice", Account.Role.TEACHER, teacher1.id());
     Account teacher2Account = new Account(UUID.randomUUID(), "bob@teacher.com", "bob", Account.Role.TEACHER, teacher2.id());
+    Account admin1Account = new Account(UUID.randomUUID(), "admin@administrator.com", "admin", Account.Role.ADMINISTRATOR, admin1.id());
 
     Course course1 = new Course(UUID.randomUUID(), 2023, "Introduction to Programming", 6, true);
     Course course2 = new Course(UUID.randomUUID(), 2023, "Thermodynamics", 5, false);
@@ -82,12 +89,15 @@ public class Main {
     accountDAO.saveAccount(student2Account);
     accountDAO.saveAccount(teacher1Account);
     accountDAO.saveAccount(teacher2Account);
+    accountDAO.saveAccount(admin1Account);
 
     studentDAO.addStudent(student1);
     studentDAO.addStudent(student2);
 
     teacherDAO.addTeacher(teacher1);
     teacherDAO.addTeacher(teacher2);
+
+    administratorDAO.addAdministrator(admin1);
 
     courseDAO.addCourse(course1);
     courseDAO.addCourse(course2);
