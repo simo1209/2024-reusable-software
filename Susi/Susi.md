@@ -56,3 +56,20 @@ For buisness layer:
 For presentation layer:
 - Get data from console, send it to service layer
 
+Assignment from discord
+
+добавяне на администратор
+- new Account.Role ADMINISTRATOR
+- new ConsoleAdministratorUI
+- features:
+    - създай курс
+    - създай предподавател
+    - създай студент
+    - запиши студент в курс (админ/преподавател)
+    - отпиши студент от курс (админ/предподавател)
+
+писане на оценки
+минаване на курс
+
+
+
