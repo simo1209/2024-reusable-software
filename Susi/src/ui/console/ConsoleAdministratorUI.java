@@ -10,6 +10,9 @@ import src.records.Course;
 import src.services.TeacherService;
 import src.records.Teacher;
 
+import src.services.StudentService;
+import src.records.Student;
+
 import java.util.Scanner;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,11 +24,13 @@ public class ConsoleAdministratorUI implements UserUI {
     private final Account account;
     private final CourseService courseService;
     private final TeacherService teacherService;
-    
-    public ConsoleAdministratorUI(Account account, CourseService courseService, TeacherService teacherService) {
+    private final StudentService studentService;
+
+    public ConsoleAdministratorUI(Account account, CourseService courseService, TeacherService teacherService, StudentService studentService) {
         this.account = account;
         this.courseService = courseService;
         this.teacherService = teacherService;
+        this.studentService = studentService;
     }
 
     public void displayDashboard() {
@@ -38,7 +43,8 @@ public class ConsoleAdministratorUI implements UserUI {
             System.out.println("1.2: List all courses");
             System.out.println("2.1: Add a new teacher");
             System.out.println("2.2: List all teachers");
-            System.out.println("3: Add a new student");
+            System.out.println("3.1: Add a new student");
+            System.out.println("3.2: Add a new student");
             System.out.println("4: Enroll student to course");
             System.out.println("5: Remove student from course");
             System.out.println("6: Logout");
@@ -49,7 +55,8 @@ public class ConsoleAdministratorUI implements UserUI {
                 case "1.2" -> listAllCourses();
                 case "2.1" -> addTeacher();
                 case "2.2" -> listAllTeachers();
-                case "3" -> addStudent();
+                case "3.1" -> addStudent();
+                case "3.2" -> listAllStudents();
                 case "4" -> enrollStudentToCourse();
                 case "5" -> removeStudentFromCourse();
                 case "6" -> {
@@ -137,6 +144,7 @@ public class ConsoleAdministratorUI implements UserUI {
 
         System.out.print("Enter student birthdate (YYYY-MM-DD): ");
         String birthdateInput = scanner.nextLine();
+        LocalDate birthdate = LocalDate.parse(birthdateInput);
 
         System.out.print("Enter student faculty number: ");
         String facultyNumber = scanner.nextLine();
@@ -148,7 +156,16 @@ public class ConsoleAdministratorUI implements UserUI {
         String major = scanner.nextLine();
 
         // Placeholder for student creation logic
+        studentService.createStudent(new Student(UUID.randomUUID(), firstName, middleName, lastName, egn, birthdate, facultyNumber, yearEnrolled, major));
         System.out.println("New student: " + firstName + " " + middleName + " " + lastName + ", EGN: " + egn + ", Birthdate: " + birthdateInput + ", Faculty Number: " + facultyNumber + ", Year Enrolled: " + yearEnrolled + ", Major: " + major);
+    }
+
+    private void listAllStudents() {
+      System.out.println("\n--- Listing All Students ---");
+
+      for(Student student : studentService.listAllStudents()) {
+        System.out.println(student);
+      }
     }
 
     private void enrollStudentToCourse() {
