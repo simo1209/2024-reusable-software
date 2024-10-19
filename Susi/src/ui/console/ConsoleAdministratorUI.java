@@ -1,20 +1,31 @@
 package src.ui.console;
 
 import src.ui.UserUI;
+
+import src.records.Account;
+
 import src.services.CourseService;
 import src.records.Course;
+
+import src.services.TeacherService;
+import src.records.Teacher;
 
 import java.util.Scanner;
 import java.util.Optional;
 import java.util.UUID;
+import java.time.LocalDate;
 
 public class ConsoleAdministratorUI implements UserUI {
     private final Scanner scanner = new Scanner(System.in);
 
+    private final Account account;
     private final CourseService courseService;
+    private final TeacherService teacherService;
     
-    public ConsoleAdministratorUI(CourseService courseService) {
-      this.courseService = courseService;
+    public ConsoleAdministratorUI(Account account, CourseService courseService, TeacherService teacherService) {
+        this.account = account;
+        this.courseService = courseService;
+        this.teacherService = teacherService;
     }
 
     public void displayDashboard() {
@@ -25,7 +36,8 @@ public class ConsoleAdministratorUI implements UserUI {
             System.out.println("\nChoose an action:");
             System.out.println("1.1: Add a new course");
             System.out.println("1.2: List all courses");
-            System.out.println("2: Add a new teacher");
+            System.out.println("2.1: Add a new teacher");
+            System.out.println("2.2: List all teachers");
             System.out.println("3: Add a new student");
             System.out.println("4: Enroll student to course");
             System.out.println("5: Remove student from course");
@@ -35,7 +47,8 @@ public class ConsoleAdministratorUI implements UserUI {
             switch (choice) {
                 case "1.1" -> addCourse();
                 case "1.2" -> listAllCourses();
-                case "2" -> addTeacher();
+                case "2.1" -> addTeacher();
+                case "2.2" -> listAllTeachers();
                 case "3" -> addStudent();
                 case "4" -> enrollStudentToCourse();
                 case "5" -> removeStudentFromCourse();
@@ -90,12 +103,22 @@ public class ConsoleAdministratorUI implements UserUI {
 
         System.out.print("Enter teacher birthdate (YYYY-MM-DD): ");
         String birthdateInput = scanner.nextLine();
+        LocalDate birthdate = LocalDate.parse(birthdateInput);
 
         System.out.print("Enter teacher academic title: ");
         String academicTitle = scanner.nextLine();
 
         // Placeholder for teacher creation logic
+        teacherService.createTeacher(new Teacher(UUID.randomUUID(), firstName, middleName, lastName, egn, birthdate, academicTitle));
         System.out.println("New teacher: " + firstName + " " + middleName + " " + lastName + ", EGN: " + egn + ", Birthdate: " + birthdateInput + ", Title: " + academicTitle);
+    }
+
+    private void listAllTeachers() {
+      System.out.println("\n--- Listing All Teachers ---");
+
+      for(Teacher teacher : teacherService.listAllTeachers()) {
+        System.out.println(teacher);
+      }
     }
 
     private void addStudent() {
