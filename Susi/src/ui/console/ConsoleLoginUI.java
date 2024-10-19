@@ -12,33 +12,33 @@ import java.util.Scanner;
 
 public class ConsoleLoginUI implements LoginUI {
     private final AuthenticationService authenticationService;
-    private final CourseService courseService;
     private final Scanner scanner = new Scanner(System.in);
     private final UIFactory uiFactory;
 
-    public ConsoleLoginUI(AuthenticationService authenticationService, CourseService courseService) {
+    public ConsoleLoginUI(AuthenticationService authenticationService, UIFactory uiFactory) {
         this.authenticationService = authenticationService;
-        this.courseService = courseService;
-
-        this.uiFactory = new UIFactory(courseService);
+        this.uiFactory = uiFactory;
     }
 
     @Override
     public void displayLogin() {
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
+        while (true) {
+            System.out.print("Enter email: ");
+            String email = scanner.nextLine();
 
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
 
-        Optional<Account> accountOpt = authenticationService.authenticate(email, password);
+            // TODO: use role instead of Account
+            Optional<Account> accountOpt = authenticationService.authenticate(email, password);
 
-        if (accountOpt.isPresent()) {
-            Account account = accountOpt.get();
-            UserUI userUI = uiFactory.createUI(account);
-            userUI.displayDashboard();
-        } else {
-            System.out.println("Login failed. Please try again.");
+            if (accountOpt.isPresent()) {
+                Account account = accountOpt.get();
+                UserUI userUI = uiFactory.createUI(account);
+                userUI.displayDashboard();
+            } else {
+                System.out.println("Login failed. Please try again.");
+            }
         }
     }
 }

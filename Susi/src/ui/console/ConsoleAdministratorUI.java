@@ -20,8 +20,8 @@ public class ConsoleAdministratorUI implements UserUI {
     public void displayDashboard() {
         System.out.println("Welcome to the Administrator Dashboard!");
 
-        boolean running = true;
-        while (running) {
+        boolean loggedIn = true;
+        while (loggedIn) {
             System.out.println("\nChoose an action:");
             System.out.println("1.1: Add a new course");
             System.out.println("1.2: List all courses");
@@ -29,7 +29,7 @@ public class ConsoleAdministratorUI implements UserUI {
             System.out.println("3: Add a new student");
             System.out.println("4: Enroll student to course");
             System.out.println("5: Remove student from course");
-            System.out.println("6: Exit");
+            System.out.println("6: Logout");
 
             String choice = scanner.nextLine();
             switch (choice) {
@@ -41,7 +41,7 @@ public class ConsoleAdministratorUI implements UserUI {
                 case "5" -> removeStudentFromCourse();
                 case "6" -> {
                     System.out.println("Exiting the Administrator Dashboard...");
-                    running = false;
+                    loggedIn = false;
                 }
                 default -> System.out.println("Invalid option. Please choose again.");
             }

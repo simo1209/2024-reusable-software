@@ -42,6 +42,8 @@ import src.services.CourseService;
 import src.services.impl.PlaintextPasswordAuthenticationService;
 import src.services.impl.SimpleCourseService;
 
+import src.ui.UIFactory;
+
 import src.ui.console.ConsoleLoginUI;
 
 import java.time.LocalDate;
@@ -92,7 +94,6 @@ public class Main {
     accountDAO.saveAccount(teacher1Account);
     accountDAO.saveAccount(teacher2Account);
     accountDAO.saveAccount(admin1Account);
-
     studentDAO.addStudent(student1);
     studentDAO.addStudent(student2);
 
@@ -135,7 +136,8 @@ public class Main {
     AuthenticationService authenticationService = new PlaintextPasswordAuthenticationService(accountDAO);
     CourseService courseService = new SimpleCourseService(courseDAO);
 
-    ConsoleLoginUI loginUI = new ConsoleLoginUI(authenticationService, courseService);
+    UIFactory uiFactory = new UIFactory(courseService);
+    ConsoleLoginUI loginUI = new ConsoleLoginUI(authenticationService, uiFactory);
 
 
     loginUI.displayLogin();
