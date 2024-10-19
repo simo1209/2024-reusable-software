@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MemoryStudentDAO implements StudentDAO {
@@ -14,13 +15,13 @@ public class MemoryStudentDAO implements StudentDAO {
     private final Map<String, Student> studentByFacultyNumber = new HashMap<>();
 
     @Override
-    public Student getStudentById(UUID id) {
-        return studentById.get(id);
+    public Optional<Student> getStudentById(UUID id) {
+        return Optional.ofNullable(studentById.get(id));
     }
 
     @Override
-    public Student getStudentByFacultyNumber(String facultyNumber) {
-        return studentByFacultyNumber.get(facultyNumber);
+    public Optional<Student> getStudentByFacultyNumber(String facultyNumber) {
+        return Optional.ofNullable(studentByFacultyNumber.get(facultyNumber));
     }
 
     @Override

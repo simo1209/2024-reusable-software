@@ -140,7 +140,7 @@ public class Main {
     AuthenticationService authenticationService = new PlaintextPasswordAuthenticationService(accountDAO);
     CourseService courseService = new SimpleCourseService(courseDAO);
     TeacherService teacherService = new SimpleTeacherService(teacherDAO);
-    StudentService studentService = new SimpleStudentService(studentDAO);
+    StudentService studentService = new SimpleStudentService(studentDAO, courseDAO, courseStudentAssociation);
 
     UIFactory uiFactory = new UIFactory(courseService, teacherService, studentService);
     ConsoleLoginUI loginUI = new ConsoleLoginUI(authenticationService, uiFactory);

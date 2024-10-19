@@ -44,9 +44,9 @@ public class ConsoleAdministratorUI implements UserUI {
             System.out.println("2.1: Add a new teacher");
             System.out.println("2.2: List all teachers");
             System.out.println("3.1: Add a new student");
-            System.out.println("3.2: Add a new student");
-            System.out.println("4: Enroll student to course");
-            System.out.println("5: Remove student from course");
+            System.out.println("3.2: List all students");
+            System.out.println("4.1: Enroll student to course");
+            System.out.println("4.2: Remove student from course");
             System.out.println("6: Logout");
 
             String choice = scanner.nextLine();
@@ -57,8 +57,8 @@ public class ConsoleAdministratorUI implements UserUI {
                 case "2.2" -> listAllTeachers();
                 case "3.1" -> addStudent();
                 case "3.2" -> listAllStudents();
-                case "4" -> enrollStudentToCourse();
-                case "5" -> removeStudentFromCourse();
+                case "4.1" -> enrollStudentToCourse();
+                case "4.2" -> removeStudentFromCourse();
                 case "6" -> {
                     System.out.println("Exiting the Administrator Dashboard...");
                     loggedIn = false;
@@ -170,14 +170,21 @@ public class ConsoleAdministratorUI implements UserUI {
 
     private void enrollStudentToCourse() {
         System.out.println("\n--- Enroll Student to Course ---");
-        System.out.print("Enter student EGN: ");
-        String studentEgn = scanner.nextLine();
+        System.out.print("Enter student id: ");
+        UUID studentId = UUID.fromString(scanner.nextLine());
 
-        System.out.print("Enter course name: ");
-        String courseName = scanner.nextLine();
+        System.out.print("Enter course id: ");
+        UUID courseId = UUID.fromString(scanner.nextLine());
 
         // Placeholder for enrolling student to course logic
-        System.out.println("Enrolled student with EGN " + studentEgn + " to course " + courseName);
+        try {
+          studentService.enrollStudentToCourse(courseId, studentId);
+          System.out.println("Enrolled student with id " + studentId + " to course " + courseId);
+        } catch (StudentService.CourseNotFoundException courseNotFound) {
+          System.out.println("Couldn't find course " + courseId);
+        } catch (StudentService.StudentNotFoundException studentNotFound) {
+          System.out.println("Couldn't find student " + studentId);
+        }
     }
 
     private void removeStudentFromCourse() {
