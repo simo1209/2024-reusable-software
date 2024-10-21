@@ -5,18 +5,18 @@ import src.ui.console.ConsoleStudentUI;
 import src.ui.console.ConsoleTeacherUI;
 import src.ui.console.ConsoleAdministratorUI;
 
-import src.services.CourseService;
+import src.services.AdministratorService;
 import src.services.TeacherService;
 import src.services.StudentService;
 
 public class UIFactory {
 
-    private final CourseService courseService;
+    private final AdministratorService administratorService;
     private final TeacherService teacherService;
     private final StudentService studentService;
 
-    public UIFactory(CourseService courseService, TeacherService teacherService, StudentService studentService) {
-      this.courseService = courseService;
+    public UIFactory(AdministratorService administratorService, TeacherService teacherService, StudentService studentService) {
+      this.administratorService = administratorService;
       this.teacherService = teacherService;
       this.studentService = studentService;
     }
@@ -27,7 +27,7 @@ public class UIFactory {
         } else if (account.role() == Account.Role.STUDENT) {
             return new ConsoleStudentUI();
         } else if (account.role() == Account.Role.ADMINISTRATOR) {
-            return new ConsoleAdministratorUI(account, courseService, teacherService, studentService);
+            return new ConsoleAdministratorUI(account, administratorService);
         } else {
             throw new IllegalArgumentException("Unknown role: " + account.role());
         }

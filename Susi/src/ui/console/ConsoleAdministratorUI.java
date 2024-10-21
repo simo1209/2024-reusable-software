@@ -3,15 +3,11 @@ package src.ui.console;
 import src.ui.UserUI;
 
 import src.records.Account;
-
-import src.services.CourseService;
 import src.records.Course;
-
-import src.services.TeacherService;
 import src.records.Teacher;
-
-import src.services.StudentService;
 import src.records.Student;
+
+import src.services.AdministratorService;
 
 import java.util.Scanner;
 import java.util.Optional;
@@ -22,15 +18,11 @@ public class ConsoleAdministratorUI implements UserUI {
     private final Scanner scanner = new Scanner(System.in);
 
     private final Account account;
-    private final CourseService courseService;
-    private final TeacherService teacherService;
-    private final StudentService studentService;
+    private final AdministratorService administratorService;
 
-    public ConsoleAdministratorUI(Account account, CourseService courseService, TeacherService teacherService, StudentService studentService) {
+    public ConsoleAdministratorUI(Account account, AdministratorService administratorService) {
         this.account = account;
-        this.courseService = courseService;
-        this.teacherService = teacherService;
-        this.studentService = studentService;
+        this.administratorService = administratorService;
     }
 
     public void displayDashboard() {
@@ -82,14 +74,14 @@ public class ConsoleAdministratorUI implements UserUI {
         System.out.print("Is the course required? (true/false): ");
         boolean required = Boolean.parseBoolean(scanner.nextLine());
 
-        courseService.createCourse(new Course(UUID.randomUUID(), courseYear, courseName, credits, required));
+        administratorService.createCourse(new Course(UUID.randomUUID(), courseYear, courseName, credits, required));
         System.out.println("New course: " + courseName + ", Year: " + courseYear + ", Credits: " + credits + ", Required: " + required);
     }
 
     private void listAllCourses() {
       System.out.println("\n--- Listing All Courses ---");
 
-      for(Course course : courseService.listAllCourses()) {
+      for(Course course : administratorService.listAllCourses()) {
         System.out.println(course);
       }
     }
@@ -116,14 +108,14 @@ public class ConsoleAdministratorUI implements UserUI {
         String academicTitle = scanner.nextLine();
 
         // Placeholder for teacher creation logic
-        teacherService.createTeacher(new Teacher(UUID.randomUUID(), firstName, middleName, lastName, egn, birthdate, academicTitle));
+        administratorService.createTeacher(new Teacher(UUID.randomUUID(), firstName, middleName, lastName, egn, birthdate, academicTitle));
         System.out.println("New teacher: " + firstName + " " + middleName + " " + lastName + ", EGN: " + egn + ", Birthdate: " + birthdateInput + ", Title: " + academicTitle);
     }
 
     private void listAllTeachers() {
       System.out.println("\n--- Listing All Teachers ---");
 
-      for(Teacher teacher : teacherService.listAllTeachers()) {
+      for(Teacher teacher : administratorService.listAllTeachers()) {
         System.out.println(teacher);
       }
     }
@@ -156,14 +148,14 @@ public class ConsoleAdministratorUI implements UserUI {
         String major = scanner.nextLine();
 
         // Placeholder for student creation logic
-        studentService.createStudent(new Student(UUID.randomUUID(), firstName, middleName, lastName, egn, birthdate, facultyNumber, yearEnrolled, major));
+        administratorService.createStudent(new Student(UUID.randomUUID(), firstName, middleName, lastName, egn, birthdate, facultyNumber, yearEnrolled, major));
         System.out.println("New student: " + firstName + " " + middleName + " " + lastName + ", EGN: " + egn + ", Birthdate: " + birthdateInput + ", Faculty Number: " + facultyNumber + ", Year Enrolled: " + yearEnrolled + ", Major: " + major);
     }
 
     private void listAllStudents() {
       System.out.println("\n--- Listing All Students ---");
 
-      for(Student student : studentService.listAllStudents()) {
+      for(Student student : administratorService.listAllStudents()) {
         System.out.println(student);
       }
     }
@@ -178,11 +170,11 @@ public class ConsoleAdministratorUI implements UserUI {
 
         // Placeholder for enrolling student to course logic
         try {
-          studentService.enrollStudentToCourse(courseId, studentId);
+          administratorService.enrollStudentToCourse(courseId, studentId);
           System.out.println("Enrolled student with id " + studentId + " to course " + courseId);
-        } catch (StudentService.CourseNotFoundException courseNotFound) {
+        } catch (AdministratorService.CourseNotFoundException courseNotFound) {
           System.out.println("Couldn't find course " + courseId);
-        } catch (StudentService.StudentNotFoundException studentNotFound) {
+        } catch (AdministratorService.StudentNotFoundException studentNotFound) {
           System.out.println("Couldn't find student " + studentId);
         }
     }
