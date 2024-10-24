@@ -39,6 +39,7 @@ public class ConsoleAdministratorUI implements UserUI {
             System.out.println("3.2: List all students");
             System.out.println("4.1: Enroll student to course");
             System.out.println("4.2: Remove student from course");
+            System.out.println("4.3: List courses for student");
             System.out.println("6: Logout");
 
             String choice = scanner.nextLine();
@@ -51,6 +52,7 @@ public class ConsoleAdministratorUI implements UserUI {
                 case "3.2" -> listAllStudents();
                 case "4.1" -> enrollStudentToCourse();
                 case "4.2" -> removeStudentFromCourse();
+                case "4.3" -> getCoursesForStudent();
                 case "6" -> {
                     System.out.println("Exiting the Administrator Dashboard...");
                     loggedIn = false;
@@ -181,14 +183,34 @@ public class ConsoleAdministratorUI implements UserUI {
 
     private void removeStudentFromCourse() {
         System.out.println("\n--- Remove Student from Course ---");
-        System.out.print("Enter student EGN: ");
-        String studentEgn = scanner.nextLine();
+        System.out.print("Enter student id: ");
+        UUID studentId = UUID.fromString(scanner.nextLine());
 
-        System.out.print("Enter course name: ");
-        String courseName = scanner.nextLine();
+        System.out.print("Enter course id: ");
+        UUID courseId = UUID.fromString(scanner.nextLine());
 
-        // Placeholder for removing student from course logic
-        System.out.println("Removed student with EGN " + studentEgn + " from course " + courseName);
+        try {
+          administratorService.removeStudentFromCourse(courseId, studentId);
+          System.out.println("Removed student with id " + studentId + " from course " + courseId);
+        } catch (AdministratorService.CourseNotFoundException courseNotFound) {
+          System.out.println("Couldn't find course " + courseId);
+        } catch (AdministratorService.StudentNotFoundException studentNotFound) {
+          System.out.println("Couldn't find student " + studentId);
+        }
+    }
+
+    private void getCoursesForStudent() {
+        System.out.println("\n--- List Courses for Student ---");
+        System.out.print("Enter student id: ");
+        UUID studentId = UUID.fromString(scanner.nextLine());
+
+        try {
+          for (Course course : administratorService.getCoursesForStudent(studentId)) {
+            System.out.println(course);
+          }
+        } catch (AdministratorService.StudentNotFoundException studentNotFound) {
+          System.out.println("Couldn't find student " + studentId);
+        }
     }
 }
 

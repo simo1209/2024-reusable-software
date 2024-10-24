@@ -16,7 +16,9 @@ public interface AdministratorService {
 
   public class CourseNotFoundException extends Exception {}
   public class StudentNotFoundException extends Exception {}
+  List<Course> getCoursesForStudent(UUID studentId) throws StudentNotFoundException;
   void enrollStudentToCourse(UUID courseId, UUID studentId) throws CourseNotFoundException, StudentNotFoundException;
+  void removeStudentFromCourse(UUID courseId, UUID studentId) throws CourseNotFoundException, StudentNotFoundException;
 
   public void createTeacher(Teacher teacher);
   public List<Teacher> listAllTeachers();

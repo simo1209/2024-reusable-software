@@ -15,6 +15,7 @@ import src.services.AdministratorService;
 import java.util.Optional;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class SimpleAdministratorService implements AdministratorService {
   private final CourseDAO courseDAO;
@@ -51,8 +52,24 @@ public class SimpleAdministratorService implements AdministratorService {
     return studentDAO.getAllStudents();
   }
 
+
   @Override
-  public void enrollStudentToCourse(UUID courseId, UUID studentId) throws CourseNotFoundException, StudentNotFoundException{
+  public List<Course> getCoursesForStudent(UUID studentId) throws StudentNotFoundException {
+    Optional<Student> student = studentDAO.getStudentById(studentId);
+    if (! student.isPresent()) {
+      throw new StudentNotFoundException();
+    }
+
+    return courseStudentAssociation.getCoursesForStudent(studentId)
+      .stream()
+      .map(courseUUID -> courseDAO.getCourseById(courseUUID))
+      .filter(Optional::isPresent)
+      .map(Optional::get)
+      .collect(Collectors.toList());
+  }
+
+  @Override
+  public void enrollStudentToCourse(UUID courseId, UUID studentId) throws CourseNotFoundException, StudentNotFoundException {
     Optional<Course> course = courseDAO.getCourseById(courseId);
     if (! course.isPresent()) {
       throw new CourseNotFoundException();
@@ -64,6 +81,21 @@ public class SimpleAdministratorService implements AdministratorService {
     }
 
     courseStudentAssociation.addStudentToCourse(courseId, studentId);
+  }
+
+  @Override
+  public void removeStudentFromCourse(UUID courseId, UUID studentId) throws CourseNotFoundException, StudentNotFoundException {
+    Optional<Course> course = courseDAO.getCourseById(courseId);
+    if (! course.isPresent()) {
+      throw new CourseNotFoundException();
+    }
+
+    Optional<Student> student = studentDAO.getStudentById(studentId);
+    if (! student.isPresent()) {
+      throw new StudentNotFoundException();
+    }
+
+    courseStudentAssociation.removeStudentFromCourse(courseId, studentId);
   }
 
   @Override

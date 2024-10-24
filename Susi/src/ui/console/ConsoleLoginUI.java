@@ -1,7 +1,6 @@
 package src.ui.console;
 
 import src.services.AuthenticationService;
-import src.services.CourseService;
 import src.records.Account;
 import src.ui.LoginUI;
 import src.ui.UIFactory;

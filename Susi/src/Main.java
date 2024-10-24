@@ -147,7 +147,5 @@ public class Main {
 
 
     loginUI.displayLogin();
-
-
   }
 }
