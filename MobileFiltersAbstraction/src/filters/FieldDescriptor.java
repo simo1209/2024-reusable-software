@@ -15,6 +15,10 @@ public class FieldDescriptor<T> {
         return fieldsExtractors;
     }
 
+    public Function<T, ?> getExtractor(String field) {
+      return this.getFiltersExtractors().get(field);
+    }
+
     /*
     public void addFilter(String fieldName, Filter<?> filter) {
         filters.put(fieldName, filter);
