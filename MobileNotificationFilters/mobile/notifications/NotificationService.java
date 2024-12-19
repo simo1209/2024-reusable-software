@@ -15,14 +15,7 @@ public class NotificationService {
 
     public void onNewListingAdded(Listing listing) {
         for (NotificationRule notificationRule : notificationRules) {
-            boolean shouldNotify = true;
-            for (Filter<Listing> filter : notificationRule.filters()) {
-                if (!filter.matches(listing)) {
-                    shouldNotify = false;
-                    break;
-                }
-            }
-            if (shouldNotify) {
+            if (notificationRule.filter().matches(listing)) {
                 String message = listing.getCar().brand() + " "
                     + listing.getCar().model() +
                     " for " + listing.getPrice();
